@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DCT Image Compression</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<h2>DCT Image Compression</h2>
+
+<div class="card">
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="image" accept="image/*" required>
+
+        <h3>Pilih Level Kompresi</h3>
+        <input type="range"
+               name="quality"
+               min="10"
+               max="100"
+               value="50"
+               step="5"
+               oninput="document.getElementById('ql').innerText = this.value + '%'">
+
+        <p>Kualitas: <span id="ql">50%</span></p>
+
+        <button type="submit">Compress</button>
+    </form>
+</div>
+
+{% if result %}
+<!-- ================= IMAGE PREVIEW ================= -->
+<div class="image-row compact">
+    <div class="image-box">
+        <h4>Original</h4>
+        <img src="{{ original }}" alt="Original">
+    </div>
+
+    <div class="image-box">
+        <h4>Compressed</h4>
+        <img src="{{ result_image }}" alt="Compressed">
+    </div>
+
+    <div class="image-box">
+        <h4>Heatmap Error</h4>
+        <img src="{{ heatmap }}" alt="Heatmap">
+    </div>
+</div>
+
+<!-- ================= STATS ================= -->
+<div class="stats-box">
+    <h3>Compression Stats</h3>
+    <p>Ukuran Asli: <b>{{ original_size }} KB</b></p>
+    <p>Ukuran Huffman: <b>{{ compressed_size }} KB</b></p>
+    <p>Entropy: <b>{{ entropy }} bits/symbol</b></p>
+    <p>Penghematan: <b>{{ saving_percent }}%</b></p>
+</div>
+
+<!-- ================= DOWNLOAD ================= -->
+<div class="download-area">
+    <a href="{{ result_image }}" download class="download-btn">
+        ⬇ Download Hasil
+    </a>
+</div>
+{% endif %}
+
+</body>
+</html>
